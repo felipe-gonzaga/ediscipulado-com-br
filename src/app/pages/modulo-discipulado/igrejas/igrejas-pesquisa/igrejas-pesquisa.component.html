@@ -1,0 +1,83 @@
+<div class="row">
+    <div class="col-lg-12">
+        <nb-card>
+            <nb-card-header><h4>Pesquisa de Igrejas</h4></nb-card-header>
+            <nb-card-body>
+              <form autocomplete="off" (ngSubmit)="pesquisar()">
+                  <div class="form-group">
+                    <label for="nome" class="label">Nome</label>
+                    <input type="text" nbInput fullWidth id="nome" name="nome" placeholder="Nome" [(ngModel)]="filtro.nome">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="sigla" class="label">Sigla</label>
+                    <input type="text" nbInput fullWidth id="sigla" name="sigla" placeholder="Sigla" [(ngModel)]="filtro.sigla">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="dataInicioAtividade" class="label">Período de Atividade</label>
+                    <div class="full-name-inputs">
+                      <input nbInput placeholder="Data Inicial" fullWidth [nbDatepicker]="dataInicioAtividade" name="dataInicioAtividade" [(ngModel)]="filtro.dataInicioAtividade">
+                      <nb-datepicker format="dd.MM.yyyy" #dataInicioAtividade></nb-datepicker>
+                      <label></label>
+                      <input nbInput placeholder="Data Final" fullWidth [nbDatepicker]="dataFimAtividade" name="dataFimAtividade" [(ngModel)]="filtro.dataFimAtividade">
+                      <nb-datepicker format="dd.MM.yyyy" #dataFimAtividade></nb-datepicker>
+                    </div>
+                  </div>
+
+                  <button type="submit" nbButton status="primary">Pesquisar</button>
+              </form>
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+            <nb-card-header>
+            </nb-card-header>
+
+            <nb-card-body>
+                <p-table [value]="igrejas" [paginator]="true" [rows]="5" [responsive]="true"
+                [paginator]="true" [rows]="filtro.itensPorPagina"
+                [lazy]="true" [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)" #tabela >
+
+                <ng-template pTemplate="header" >
+                  <tr>
+                    <th class="col-codigo-igreja-header">Codigo</th>
+                    <th class="col-nome-igreja-header">Nome</th>
+                    <th class="col-sigla-igreja-header">Sigla</th>
+                    <th class="col-periodo-igreja-header">Período</th>
+                    <th class="col-acoes-igreja-header"></th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-igreja >
+                  <tr>
+                      <td class="col-codigo-igreja">{{ igreja.codigo }}</td>
+                      <td class="col-nome-igreja">{{ igreja.nome }}</td>
+                      <td class="col-sigla-igreja">{{ igreja.sigla }}</td>
+                      <td class="col-periodo-igreja">{{ igreja.dataInicioAtividade | date:'dd.MM.yyyy' + ' - ' + ( igreja.dataFimAtividade === null ? ' ... ' : igreja.dataFimAtividade | date:'dd.MM.yyyy') }}</td>
+                      <td class="col-acoes-igreja">
+                        <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Detalhar" tooltipPosition="top" [routerLink]="['/pages/igrejas/info', igreja.codigo]" ><nb-icon icon="info-outline"></nb-icon></button>
+                        <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Editar" tooltipPosition="top" [routerLink]="['/pages/igrejas', igreja.codigo]" [disabled]="!auth.temPermissao('ROLE_CADASTRAR_IGREJA')"><nb-icon icon="edit-outline"></nb-icon></button>
+                        <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(igreja)" [disabled]="!auth.temPermissao('ROLE_REMOVER_IGREJA')" ><nb-icon icon="trash-outline"></nb-icon></button>
+                      </td>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptyMessage">
+                  <tr>
+                    <td colspan="3">
+                      Nenhuma igreja encontrada
+                    </td>
+                  </tr>
+                </ng-template>
+
+              </p-table>
+            </nb-card-body>
+
+            <div class="col-lg-12">
+              <button status="primary" routerLink="/pages/igrejas/novo" nbButton [disabled]="!auth.temPermissao('ROLE_CADASTRAR_IGREJA')" >Nova Igreja</button>
+            </div>
+
+          </nb-card>
+    </div>
+</div>

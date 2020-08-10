@@ -1,0 +1,122 @@
+<div class="row">
+    <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
+        <form autocomplete="off" (ngSubmit)="salvar()" #f="ngForm" >
+          <nb-card>
+              <nb-card-header><h4>{{ editando ? 'Edição da' : 'Nova' }} Igreja</h4></nb-card-header>
+              <nb-card-body>
+                  <div class="row show-grid">
+                    <div class="col-md-6">
+                        <label for="nome" class="label">Nome *</label>
+                        <input type="text" nbInput fullWidth name="nome" [(ngModel)]="igreja.nome" ngModel #nome="ngModel" required minlength="10">
+                        <app-message [control]="nome" error="required" text="Informe o nome" ></app-message>
+                        <app-message [control]="nome" error="minlength" text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres." ></app-message>
+                      </div>
+                      <div class="col-md-6">
+                          <label for="sigla" class="label">Sigla *</label>
+                          <input type="text" nbInput fullWidth name="sigla" [(ngModel)]="igreja.sigla" ngModel #sigla="ngModel" required >
+                          <app-message [control]="sigla" error="required" text="Informe a sigla" ></app-message>
+                    </div>
+                  </div>
+
+                  <div class="row show-grid">
+                    <div class="col-md-6">
+                        <label for="email" class="label">Email</label>
+                        <input type="email" nbInput fullWidth name="email" [(ngModel)]="igreja.email" ngModel #email="ngModel" >
+                      </div>
+                      <div class="col-md-6">
+                          <label for="site" class="label">Site</label>
+                          <input type="text" nbInput fullWidth name="site" [(ngModel)]="igreja.site" ngModel #site="ngModel" >
+                    </div>
+                  </div>
+
+                  <div class="row show-grid">
+                    <div class="col-md-6">
+                        <label for="nuDocumento" class="label">Documento da Igreja</label>
+                        <input type="text" nbInput fullWidth name="nuDocumento" [(ngModel)]="igreja.nuDocumento" ngModel #nuDocumento="ngModel" >
+                      </div>
+                      <div class="col-md-6">
+                          <label for="nomeRepresentante" class="label">Representante Legal</label>
+                          <input type="text" nbInput fullWidth name="nomeRepresentante" [(ngModel)]="igreja.nomeRepresentante" ngModel #nomeRepresentante="ngModel" >
+                    </div>
+                  </div>
+
+                  <div class="row show-grid">
+                    <div class="col-md-6">
+                        <label for="dataInicioAtividade" class="label">Inicio das Atividades *</label>
+                        <input nbInput placeholder="Data Inicial" fullWidth [nbDatepicker]="dataInicioAtividade" name="dataInicioAtividade" ngModel #dataInicioAtividade="ngModel" required  [(ngModel)]="igreja.dataInicioAtividade">
+                        <nb-datepicker #dataInicioAtividade></nb-datepicker>
+                        <!--<app-message [control]="dataInicioAtividade" error="required" text="Informe a Data de Inicio das Atividades" ></app-message>-->
+                      </div>
+                      <div class="col-md-6">
+                        <label for="dataFimAtividade" class="label">Fim das Atividades</label>
+                        <input nbInput placeholder="Data Final" fullWidth [nbDatepicker]="dataFimAtividade" name="dataFimAtividade" [(ngModel)]="igreja.dataFimAtividade">
+                        <nb-datepicker #dataFimAtividade></nb-datepicker>
+                    </div>
+                  </div>
+              </nb-card-body>
+          </nb-card>
+
+          <nb-card>
+              <nb-card-header><h6>Endereço</h6></nb-card-header>
+              <nb-card-body>
+                <div class="row show-grid">
+                    <div class="col-md-6">
+                        <label for="nome" class="label">Logradouro</label>
+                        <input type="text" nbInput fullWidth name="logradouro" [(ngModel)]="igreja.logradouro" >
+                      </div>
+                      <div class="col-md-6">
+                          <label for="sigla" class="label">Número</label>
+                          <input type="text" nbInput fullWidth name="numero" [(ngModel)]="igreja.numero" >
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                    <div class="col-md-12">
+                        <label for="nome" class="label">Complemento</label>
+                        <input type="text" nbInput fullWidth name="complemento" [(ngModel)]="igreja.complemento" >
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                    <div class="col-md-6">
+                        <label for="sigla" class="label">CEP</label>
+                        <input type="text" nbInput fullWidth name="cep" [(ngModel)]="igreja.cep" >
+                    </div>
+                    <div class="col-md-6">
+                      <label for="nome" class="label">Bairro</label>
+                      <input type="text" nbInput fullWidth name="bairro" [(ngModel)]="igreja.bairro" >
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                    <div class="col-md-6">
+                        <label for="estado" class="label">Estado *</label>
+                        <nb-select fullWidth name="estado" [(selected)]="igreja.cidade.estado.codigo" placeholder="Selecione" (selectedChange)="listarCidadesPorEstado()"
+                        [(ngModel)]="igreja.cidade.estado.codigo" #estado="ngModel" ngModel required>
+                          <nb-option  *ngFor="let estado of estados" [value]="estado.value"> {{ estado.name }}</nb-option>
+                        </nb-select>
+                        <app-message [control]="estado" error="required" text="Selecione um Estado." ></app-message>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="cidade" class="label">Cidade *</label>
+                      <nb-select fullWidth name="cidade" [(selected)]="igreja.cidade.codigo" placeholder="Selecione"
+                      [(ngModel)]="igreja.cidade.codigo" [disabled]="!igreja.cidade.estado.codigo" #cidade="ngModel" ngModel required>
+                        <nb-option  *ngFor="let cidade of cidades" [value]="cidade.value"> {{ cidade.name }}</nb-option>
+                      </nb-select>
+                      <app-message [control]="cidade" error="required" text="Selecione uma Cidade." ></app-message>
+                  </div>
+                </div>
+
+              </nb-card-body>
+          </nb-card>
+
+          <div class="form-group">
+            <button nbButton type="submit" status="primary" [disabled]="f.invalid">Salvar</button>
+            <button nbButton type="button" status="primary" (click)="novo(f)" >Novo</button>
+            <a routerLink="/pages/igrejas" >Voltar para a pesquisa</a>
+          </div>
+
+        </form>
+    </div>
+</div>

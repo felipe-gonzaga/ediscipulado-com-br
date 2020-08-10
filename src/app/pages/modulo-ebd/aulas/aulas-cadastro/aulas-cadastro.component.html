@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant" >
+      <form autocomplete="off" (ngSubmit)="salvar(f)" #f="ngForm" >
+        <nb-card>
+            <nb-card-header><h4>{{ editando ? 'Edição de ' : 'Nova' }} Aula</h4></nb-card-header>
+            <nb-card-body >
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="igreja" class="label">Igreja</label>
+                    <div>
+                      <nb-select fullWidth name="igreja" placeholder="Selecione" [selected]="aula.classe.igreja.codigo" [(ngModel)]="aula.classe.igreja.codigo" >
+                        <nb-option *ngFor="let ig of igrejas" [value]="ig.value"> {{ ig.name }}</nb-option>
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <label for="nome" class="label">Classe *</label>
+                      <nb-select fullWidth name="cdClasse" [selected]="aula.classe.codigo" [(ngModel)]="aula.classe.codigo" >
+                        <nb-option  *ngFor="let classe of classes" [value]="classe.value"> {{ classe.name }}</nb-option>
+                      </nb-select>
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="dtMatricula" class="label">Data de Aula *</label>
+                    <input nbInput placeholder="Data Aula" fullWidth [nbDatepicker]="dtAula" name="dtAula" ngModel #dtAulaValid="ngModel" [(ngModel)]="aula.dtAula" required>
+                    <nb-datepicker  #dtAula></nb-datepicker>
+                    <app-message [control]="dtAulaValid" error="required" text="Informe a data de aula" ></app-message>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="inAvaliacao" class="label">Permite Avaliação</label>
+                    <nb-radio-group class="validation-radios" name="inAvaliacao" [(value)]="aula.avaliacao">
+                      <nb-radio value="true">Sim</nb-radio>
+                      <nb-radio value="false">Não</nb-radio>
+                    </nb-radio-group>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="cdProfessor" class="label">Professor *</label>
+                    <nb-select fullWidth name="cdProfessor" placeholder="Selecione" [selected]="aula.professor.codigo" [(ngModel)]="aula.professor.codigo" >
+                      <nb-option *ngFor="let prof of professores" [value]="prof.value"> {{ prof.name }}</nb-option>
+                    </nb-select>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="descricao" class="label">Descição</label>
+                    <textarea nbInput name="descricao" fullWidth placeholder="Descição" [(ngModel)]="aula.descricao"></textarea>
+                  </div>
+                </div>
+
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+          <nb-card-header><h6>Lição</h6></nb-card-header>
+          <nb-card-body >
+            <div class="form-group">
+              <p-pickList [source]="resumoLicao" [target]="resumoLicaoSelecionadas" sourceHeader="Lições" targetHeader="Selecionadas" [responsive]="true" filterBy="nomeCiclo"
+              dragdrop="true" sourceFilterPlaceholder="Buscar Lições" targetFilterPlaceholder="Buscar Lições" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                <ng-template let-lic pTemplate="item">
+                  <div class="ui-helper-clearfix">
+                      <div style="font-size:14px;float:left;margin:15px 5px 0 0">{{lic.nomeCiclo}}: {{lic.numeroLicao | number:'2.0'}} - {{lic.nome}}</div>
+                  </div>
+                </ng-template>
+              </p-pickList>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+
+        <div class="form-group">
+          <button nbButton type="submit" status="primary" [disabled]="f.invalid">Salvar</button>
+          <a routerLink="/pages/aulas" >Ir para a pesquisa</a>
+        </div>
+
+      </form>
+  </div>
+</div>

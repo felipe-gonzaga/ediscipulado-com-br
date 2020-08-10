@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="col-lg-12">
+      <nb-card>
+          <nb-card-header><h4>Pesquisa de Eventos</h4></nb-card-header>
+          <nb-card-body>
+            <form autocomplete="off" (ngSubmit)="pesquisar()">
+              <div class="form-group">
+                <label for="exampleInputEmail1" class="label">Nome</label>
+                <div>
+
+                <nb-select fullWidth name="codigoIgreja" [selected]="filtro.codigoIgreja" [(ngModel)]="filtro.codigoIgreja">
+                  <nb-option  *ngFor="let igreja of igrejas" [value]="igreja.value"> {{ igreja.name }}</nb-option>
+                </nb-select>
+
+              </div>
+              </div>
+              <div class="form-group">
+                <label for="nome" class="label">Nome</label>
+                <input type="text" nbInput fullWidth id="nome" name="nome" placeholder="Nome" [(ngModel)]="filtro.nome">
+              </div>
+
+              <button type="submit" nbButton status="primary">Pesquisar</button>
+            </form>
+          </nb-card-body>
+        </nb-card>
+
+       <nb-card>
+          <nb-card-header>
+          </nb-card-header>
+
+          <nb-card-body>
+              <p-table [value]="eventos" [paginator]="true" [rows]="5" [responsive]="true"
+              [paginator]="true" [rows]="filtro.itensPorPagina"
+              [lazy]="true" [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)" #tabela >
+
+              <ng-template pTemplate="header" >
+                <tr>
+                  <th class="col-codigo-evento-header">Codigo</th>
+                  <th class="col-nome-evento-header">Nome</th>
+                  <th class="col-igreja-evento-header">Igreja</th>
+                  <th class="col-ativo-evento-header">Situação</th>
+                  <th class="col-acoes-evento-header"></th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-even >
+                <tr>
+                    <td class="col-codigo-evento">{{ even.codigo }}</td>
+                    <td class="col-nome-evento">{{ even.nome }}</td>
+                    <td class="col-igreja-evento">{{ even.nomeIgreja }}</td>
+                    <td class="col-ativo-evento">
+                      <a href="javascript:;"
+                        [pTooltip]="even.ativo ? 'Inativar' : 'Ativa'"
+                        tooltipPosition="top"
+                        *ngIf="getHabilitarClick()"
+                        (click)="alternarStatus(even)">
+                          {{ even.ativo ? 'Ativo' : 'Inativo' }}
+                      </a>
+                      <a href="javascript:;"
+                        tooltipPosition="top"
+                        *ngIf="!getHabilitarClick()"
+                        [ngStyle]="{'cursor': 'not-allowed', 'opacity': '.45'}">
+                        {{ even.ativo ? 'Ativo' : 'Inativo' }}
+                      </a>
+                    </td>
+                    <td class="col-acoes-evento">
+                      <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Editar" tooltipPosition="top" [routerLink]="['/pages/eventos', even.codigo]" [disabled]="!auth.temPermissao('ROLE_CADASTRAR_EVENTO')"><nb-icon icon="edit-outline"></nb-icon></button>
+                      <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(even)" [disabled]="!auth.temPermissao('ROLE_REMOVER_EVENTO')" ><nb-icon icon="trash-outline"></nb-icon></button>
+                    </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="emptyMessage">
+                <tr>
+                  <td colspan="3">
+                    Nenhum evento encontrado
+                  </td>
+                </tr>
+              </ng-template>
+
+            </p-table>
+          </nb-card-body>
+
+          <div class="col-lg-12">
+            <button status="primary" routerLink="/pages/eventos/novo" nbButton [disabled]="!auth.temPermissao('ROLE_CADASTRAR_EVENTO')" >Novo Evento</button>
+          </div>
+
+        </nb-card>
+
+
+    </div>
+</div>

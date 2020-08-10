@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant" >
+      <form autocomplete="off" (ngSubmit)="salvar(f)" #f="ngForm" >
+        <nb-card>
+            <nb-card-header><h4>Novo Convertido [Ficha Simples]</h4></nb-card-header>
+            <nb-card-body >
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="igreja" class="label">Igreja</label>
+                    <div>
+                      <nb-select fullWidth name="igreja" placeholder="Selecione" [selected]="discipulando.igreja.codigo" [(ngModel)]="discipulando.igreja.codigo" (selectedChange)="atualizarLocalConversaoEventoConversao()" >
+                        <nb-option *ngFor="let ig of igrejas" [value]="ig.value"> {{ ig.name }}</nb-option>
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <label for="nome" class="label">Nome *</label>
+                      <input type="text" nbInput fullWidth name="nome" [(ngModel)]="discipulando.nome" ngModel #nome="ngModel" required minlength="10">
+                      <app-message [control]="nome" error="required" text="Informe o nome" ></app-message>
+                      <app-message [control]="nome" error="minlength" text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres." ></app-message>
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="dataNascimento" class="label">Data Nascimento *</label>
+                    <input nbInput placeholder="Data Inicial" fullWidth [nbDatepicker]="dataNascimento" name="dataNascimento" ngModel #datanascimento="ngModel" [(ngModel)]="discipulando.dataNascimento" required>
+                    <nb-datepicker  #dataNascimento></nb-datepicker>
+                    <app-message [control]="datanascimento" error="required" text="Informe a data de nascimento" ></app-message>
+                  </div>
+                  <div class="col-md-6">
+                      <label for="sexo" class="label">Sexo</label>
+                      <nb-radio-group class="validation-radios" name="sexo" [(value)]="discipulando.sexo">
+                        <nb-radio value="H">Homem</nb-radio>
+                        <nb-radio value="M">Mulher</nb-radio>
+                      </nb-radio-group>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="dataConversao" class="label">Data de Conversão *</label>
+                    <input nbInput placeholder="Data Inicial" fullWidth [nbDatepicker]="dataConversao" name="dataConversao" ngModel #dataConversaoValid="ngModel" [(ngModel)]="discipulando.dataConversao" required>
+                    <nb-datepicker  #dataConversao></nb-datepicker>
+                    <app-message [control]="dataConversaoValid" error="required" text="Informe a data de conversão" ></app-message>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="prefixo" class="label">Telefone: </label>
+                    <input type="text" nbInput mask="(99)" placeholder="(99)" size="2" required name="prefixo" [(ngModel)]="telefone.prefixo" >
+                    <input nbInput mask="99999-999?9" placeholder="99999-9999" required name="numero" [(ngModel)]="telefone.numero" >
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="localConversao" class="label">Local de Conversão *</label>
+                    <nb-select fullWidth name="localConversao" ngModel #localConversao="ngModel" [(selected)]="discipulando.localConversao.codigo"  placeholder="Selecione" [(ngModel)]="discipulando.localConversao.codigo" required >
+                      <nb-option  *ngFor="let local of locaisConversao" [value]="local.value"> {{ local.name }}</nb-option>
+                    </nb-select>
+                    <app-message [control]="localConversao" error="required" text="Selecione um Local de Conversão." ></app-message>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="eventoConversao" class="label">Evento Conversão *</label>
+                    <nb-select fullWidth name="eventoConversao" ngModel #eventoConversao="ngModel" [selected]="discipulando.eventoConversao.codigo"  placeholder="Selecione" [(ngModel)]="discipulando.eventoConversao.codigo" required >
+                      <nb-option  *ngFor="let evento of eventos" [value]="evento.value"> {{ evento.name }}</nb-option>
+                    </nb-select>
+                    <app-message [control]="eventoConversao" error="required" text="Selecione um Evento." ></app-message>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="email" class="label">E-mail</label>
+                    <input type="email" nbInput fullWidth name="email" [(ngModel)]="discipulando.email" >
+                  </div>
+                </div>
+
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+            <nb-card-header><h6>Endereço</h6></nb-card-header>
+            <nb-card-body>
+              <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="nome" class="label">Logradouro</label>
+                    <input type="text" nbInput fullWidth name="logradouro" [(ngModel)]="discipulando.endereco.logradouro" >
+                  </div>
+                  <div class="col-md-6">
+                        <label for="sigla" class="label">Número</label>
+                        <input type="text" nbInput fullWidth name="numero" [(ngModel)]="discipulando.endereco.numero" >
+                  </div>
+              </div>
+
+              <div class="row show-grid">
+                  <div class="col-md-12">
+                      <label for="nome" class="label">Complemento</label>
+                      <input type="text" nbInput fullWidth name="complemento" [(ngModel)]="discipulando.endereco.complemento" >
+                  </div>
+              </div>
+
+              <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="sigla" class="label">CEP</label>
+                    <input type="text" nbInput fullWidth name="cep" [(ngModel)]="discipulando.endereco.cep" >
+                  </div>
+                  <div class="col-md-6">
+                    <label for="nome" class="label">Bairro</label>
+                    <input type="text" nbInput fullWidth name="bairro" [(ngModel)]="discipulando.endereco.bairro" >
+                  </div>
+              </div>
+
+              <div class="row show-grid">
+                  <div class="col-md-6">
+                      <label for="estado" class="label">Estado *</label>
+                      <nb-select fullWidth name="estado" [(selected)]="discipulando.endereco.cidade.estado.codigo" placeholder="Selecione" (selectedChange)="listarCidadesPorEstado()"
+                      [(ngModel)]="discipulando.endereco.cidade.estado.codigo" #estado="ngModel" ngModel required>
+                        <nb-option  *ngFor="let estado of estados" [value]="estado.value"> {{ estado.name }}</nb-option>
+                      </nb-select>
+                      <app-message [control]="estado" error="required" text="Selecione um Estado." ></app-message>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="cidade" class="label">Cidade *</label>
+                    <nb-select fullWidth name="cidade" [(selected)]="discipulando.endereco.cidade.codigo" placeholder="Selecione"
+                    [(ngModel)]="discipulando.endereco.cidade.codigo" [disabled]="!discipulando.endereco.cidade.estado.codigo" #cidade="ngModel" ngModel required>
+                      <nb-option  *ngFor="let cidade of cidades" [value]="cidade.value"> {{ cidade.name }}</nb-option>
+                    </nb-select>
+                    <app-message [control]="cidade" error="required" text="Selecione uma Cidade." ></app-message>
+                </div>
+              </div>
+
+            </nb-card-body>
+        </nb-card>
+
+        <div class="form-group">
+          <button nbButton type="submit" status="primary" [disabled]="f.invalid">Salvar</button>
+          <a routerLink="/pages/discipulandos" >Ir para a pesquisa</a>
+        </div>
+
+      </form>
+  </div>
+</div>

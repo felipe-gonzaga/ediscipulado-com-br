@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
+    <nb-card>
+        <nb-card-header><h4>Detalhamento de Conteúdo Adicional</h4></nb-card-header>
+          <nb-card-body>
+            <form autocomplete="off" #f="ngForm" >
+              <div class="form-group">
+                  <label>Igreja</label>
+                  <input type="text" nbInput fullWidth name="igreja" [(ngModel)]="licaoAdicional.igreja.nome" disabled >
+                </div>
+
+                <div class="form-group">
+                  <label>Nome</label>
+                  <input type="text" nbInput fullWidth name="nome" [(ngModel)]="licaoAdicional.nome" disabled >
+                </div>
+
+                <div class="form-group">
+                  <label>Situação</label>
+                  <input type="text" nbInput fullWidth name="ativo" [ngModel]="licaoAdicional.ativo ? 'Ativo' : 'Inativo'" disabled >
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao" class="label">Descição</label>
+                    <textarea nbInput name="descricao" fullWidth placeholder="Descição" [(ngModel)]="licaoAdicional.descricao" disabled></textarea>
+                </div>
+
+
+                <div class="form-group">
+                  <a routerLink="/pages/conteudo-adicional" >Voltar para a pesquisa</a>
+                </div>
+
+          </form>
+        </nb-card-body>
+      </nb-card>
+    </div>
+</div>

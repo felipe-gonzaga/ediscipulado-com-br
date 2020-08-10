@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header><h4>Permissão Usuário</h4></nb-card-header>
+      <nb-card-body>
+      <form autocomplete="off" (ngSubmit)="pesquisar()">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" nbInput fullWidth id="nome" name="nome" placeholder="Nome" [(ngModel)]="filtro.nome">
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" nbInput fullWidth id="email" name="email" placeholder="Email" [(ngModel)]="filtro.email">
+        </div>
+
+        <div class="form-group">
+          <label>Situação</label>
+            <nb-radio-group [(ngModel)]="filtro.ativo" name="ativo">
+              <nb-radio value="true">Ativo</nb-radio>
+              <nb-radio value="false">Inativo</nb-radio>
+              <nb-radio value="">Todos</nb-radio>
+            </nb-radio-group>
+        </div>
+
+        <button type="submit" nbButton status="primary">Pesquisar</button>
+    </form>
+
+  </nb-card-body>
+  </nb-card>
+
+
+    <div class="ui-g">
+        <div class="ui-g-12">
+          <p-table [value]="usuarios" [paginator]="true" [rows]="5" [responsive]="true"
+            [paginator]="true" [rows]="filtro.itensPorPagina"
+            [lazy]="true" [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)" #tabela >
+
+            <ng-template pTemplate="header" >
+              <tr>
+                <th class="col-nome-usuario-header">Nome</th>
+                <th class="col-email-usuario-header">Email</th>
+                <th class="col-ativo-usuario-header">Situação</th>
+                <th class="col-acoes-usuario-header"></th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-usu >
+              <tr>
+                  <td class="col-nome-usuario">{{ usu.nome }}</td>
+                  <td class="col-email-usuario">{{ usu.email }}</td>
+                  <td class="col-ativo-usuario">
+                    <a href="javascript:;"
+                      [pTooltip]="usu.ativo ? 'Inativar' : 'Ativa'"
+                      tooltipPosition="top" (click)="alternarStatus(usu)">
+                        {{ usu.ativo ? 'Ativo' : 'Inativo' }}
+                    </a>
+                  </td>
+                  <td class="col-acoes-usuario">
+                    <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Detalhar" tooltipPosition="top" [routerLink]="['/pages/usuario-permissoes/info', usu.codigo]" ><nb-icon icon="info-outline"></nb-icon></button>
+                    <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Editar" tooltipPosition="top" [routerLink]="['/pages/usuario-permissoes', usu.codigo]" [disabled]="!auth.temPermissao('ROLE_CADASTRAR_USUARIO')"><nb-icon icon="edit-outline"></nb-icon></button>
+                  </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptyMessage">
+              <tr>
+                <td colspan="4">
+                  Nenhum usuario encontrado.
+                </td>
+              </tr>
+            </ng-template>
+
+          </p-table>
+        </div>
+
+      </div>
+  </div>
+</div>

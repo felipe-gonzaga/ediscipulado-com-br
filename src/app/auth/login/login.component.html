@@ -1,0 +1,79 @@
+<nb-layout>
+  <nb-layout-column>
+
+
+        <div class="container l-simple-page__container" style="max-width: 520px; margin: auto">
+
+          <h1 id="title" class="title">Login no e-Discipulado [TESTE]</h1>
+            <p class="sub-title">Olá! Entre com seu email.</p>
+
+            <form (ngSubmit)="login()" #form="ngForm" aria-labelledby="title">
+
+              <div class="form-control-group">
+                <label class="label" for="input-email">Email:</label>
+                <input nbInput
+                      fullWidth
+                      [(ngModel)]="user.email"
+                      #email="ngModel"
+                      name="email"
+                      id="input-email"
+                      pattern=".+@.+\..+"
+                      placeholder="Endereço de Email"
+                      autofocus
+                      [status]="email.dirty ? (email.invalid  ? 'danger' : 'success') : ''"
+
+                      [attr.aria-invalid]="email.invalid && email.touched ? true : null">
+                <ng-container *ngIf="email.invalid && email.touched">
+                  <p class="error-message" *ngIf="email.errors?.required">
+                    Email é obrigatório!
+                  </p>
+                  <p class="error-message" *ngIf="email.errors?.pattern">
+                    Email deve ser o verdadeiro!
+                  </p>
+                </ng-container>
+              </div>
+
+              <div class="form-control-group">
+                <label class="label" for="input-password">Senha:</label>
+                <input nbInput
+                      fullWidth
+                      [(ngModel)]="user.password"
+                      #password="ngModel"
+                      name="password"
+                      type="password"
+                      id="input-password"
+                      placeholder="Senha"
+                      [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+
+                      [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+                <ng-container *ngIf="password.invalid && password.touched ">
+                  <p class="error-message" *ngIf="password.errors?.required">
+                    Senha é obrigatória!
+                  </p>
+                  <p class="error-message" *ngIf="password.errors?.minlength || password.errors?.maxlength">
+                    A Senha deve conter
+                    de {{ getConfigValue('forms.validation.password.minLength') }}
+                    até {{ getConfigValue('forms.validation.password.maxLength') }}
+                    caracteres.
+                  </p>
+                </ng-container>
+              </div>
+
+              <div class="form-control-group accept-group">
+                <a class="forgot-password" routerLink="/esquecer-senha">Esqueceu a senha?</a>
+              </div>
+
+              <button nbButton
+                      fullWidth
+                      status="success"
+                      [disabled]="submitted || !form.valid"
+                      [class.btn-pulse]="submitted">
+                  Logar
+              </button>
+
+            </form>
+
+        </div>
+
+  </nb-layout-column>
+</nb-layout>

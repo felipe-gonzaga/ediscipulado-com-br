@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
+    <nb-card>
+        <nb-card-header><h4>{{ editando ? 'Edição de' : 'Novo' }} Motivo</h4></nb-card-header>
+          <nb-card-body>
+            <form autocomplete="off" #f="ngForm" (ngSubmit)="salvar(f)">
+              <div class="form-group">
+                  <label>Igreja</label>
+                  <nb-select fullWidth name="igrejas" [selected]="motivo.igreja.codigo" [(ngModel)]="motivo.igreja.codigo">
+                    <nb-option  *ngFor="let igreja of igrejas" [value]="igreja.value"> {{ igreja.name }}</nb-option>
+                  </nb-select>
+                </div>
+
+                <div class="form-group">
+                  <label>Nome</label>
+                  <input type="text" nbInput fullWidth name="nome" [(ngModel)]="motivo.nome" ngModel #nome="ngModel" required minlength="3" >
+
+                  <app-message [control]="nome" error="required" text="Informe o nome" ></app-message>
+                  <app-message [control]="nome" error="minlength" text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres." ></app-message>
+
+                </div>
+
+                <div class="form-group">
+                  <button nbButton type="submit" status="primary" [disabled]="f.invalid">Salvar</button>
+                  <button nbButton type="button" status="primary" (click)="novo(f)" >Novo</button>
+                  <a routerLink="/pages/motivos" >Voltar para a pesquisa</a>
+                </div>
+
+          </form>
+        </nb-card-body>
+      </nb-card>
+    </div>
+</div>

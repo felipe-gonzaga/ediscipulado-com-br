@@ -1,0 +1,133 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant" >
+      <form autocomplete="off" (ngSubmit)="salvar(f)" #f="ngForm" >
+        <nb-card>
+            <nb-card-header><h4>{{ editando ? 'Edição de' : '' }} Nova Visita</h4></nb-card-header>
+            <nb-card-body >
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="igreja" class="label">Igreja</label>
+                    <div>
+                      <nb-select fullWidth name="igreja" placeholder="Selecione" [selected]="visita.igreja.codigo" [(ngModel)]="visita.igreja.codigo" (selectedChange)="atualizarMotivosESituacoes()" >
+                        <nb-option *ngFor="let ig of igrejas" [value]="ig.value"> {{ ig.name }}</nb-option>
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="nome" class="label">Nome *</label>
+                    <input type="text" nbInput fullWidth name="nome" [(ngModel)]="visita.nome" ngModel #nome="ngModel" required minlength="10">
+
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="dhVisita" class="label">Data/Hora Visita *</label>
+                    <div class="full-name-inputs">
+                      <input nbInput fullWidth placeholder="Data Inicial" [nbDatepicker]="dhVisita" name="dhVisita" ngModel #dhVisita="ngModel" [(ngModel)]="visita.dhVisita" required >
+                      <nb-datepicker #dhVisita></nb-datepicker>
+                      <input type="text" nbInput  name="hora" placeholder="hh:mm" mask="Hh:m0" [(ngModel)]="visita.hora" >
+                  </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="igreja" class="label">Motivos</label>
+                    <div>
+                      <nb-select fullWidth name="motivo" placeholder="Selecione" [selected]="visita.motivo.codigo" [(ngModel)]="visita.motivo.codigo" >
+                        <nb-option *ngFor="let motivo of motivos" [value]="motivo.value"> {{ motivo.name }}</nb-option>
+                      </nb-select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="resumo" class="label">Resumo</label>
+                    <textarea nbInput name="resumo" fullWidth placeholder="Resumo" [(ngModel)]="visita.resumo"></textarea>
+                  </div>
+                </div>
+
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+          <nb-card-header><h6>Situações da Visita</h6></nb-card-header>
+          <nb-card-body>
+            <div class="row show-grid">
+              <div class="col-md-12">
+                <form #frmSituacoesVisita="ngForm">
+                  <p-table [value]="situacoes" [responsive]="true">
+                    <ng-template pTemplate="header" >
+                      <tr>
+                        <th class="col-permissoes-descricao-header">Descrição</th>
+                        <th class="col-acoes"></th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-situa >
+                      <tr>
+                        <td class="col-permissoes-descricao">{{ situa.descricao }}</td>
+                        <td class="col-acoes">
+                          <p-checkbox name="group1" [value]="situa.codigo" [(ngModel)]="situacoesSelecionados" [inputId]="situa.codigo"></p-checkbox>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptyMessage">
+                      <tr>
+                        <td  colspan="4">
+                          Nenhuma situação atribuida a visita.
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </form>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+          <nb-card-header><h6>Discipuladores</h6></nb-card-header>
+          <nb-card-body >
+            <div class="row show-grid">
+              <div class="col-md-12">
+                <p-pickList [source]="resumoDiscipuladores" [target]="resumoDiscipuladoresSelecionadas" sourceHeader="Discipuladores" targetHeader="Selecionadas" [responsive]="true" filterBy="nome"
+                [showSourceControls]="false" [showTargetControls]="false" dragdrop="true" sourceFilterPlaceholder="Buscar Discipuladores" targetFilterPlaceholder="Buscar Selecionados"
+                [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                  <ng-template let-disc pTemplate="item" >
+                    <div class="ui-helper-clearfix">
+                        <div style="font-size:14px;float:left;margin:15px 5px 0 0">{{disc.nome}}</div>
+                    </div>
+                  </ng-template>
+              </p-pickList>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+          <nb-card-header><h6>Novos Convertidos</h6></nb-card-header>
+          <nb-card-body >
+            <div class="row show-grid">
+              <div class="col-md-12">
+                <p-pickList [source]="novosConvertidos" [target]="novosConvertidosSelecionados" sourceHeader="Novos Convertidos" targetHeader="Selecionadas" [responsive]="true" filterBy="nome"
+                [showSourceControls]="false" [showTargetControls]="false" dragdrop="true" sourceFilterPlaceholder="Buscar Novos Convertidos" targetFilterPlaceholder="Buscar Selecionados"
+                [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+                  <ng-template let-novoConv pTemplate="item" >
+                    <div class="ui-helper-clearfix">
+                        <div style="font-size:14px;float:left;margin:15px 5px 0 0">{{novoConv.nome }} - {{ novoConv.dataConversao | date: 'dd.MM.yyyy'}}</div>
+                    </div>
+                  </ng-template>
+              </p-pickList>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+        <div class="form-group">
+          <button nbButton type="submit" status="primary" [disabled]="f.invalid">Salvar</button>
+          <button nbButton type="button" status="primary" (click)="novo(f)" >Novo</button>
+          <a routerLink="/pages/visitas" >Voltar para a pesquisa</a>
+        </div>
+
+      </form>
+  </div>
+</div>

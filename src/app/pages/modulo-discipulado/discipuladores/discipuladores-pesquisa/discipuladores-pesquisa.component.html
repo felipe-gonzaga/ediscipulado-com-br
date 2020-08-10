@@ -1,0 +1,99 @@
+<div class="row">
+    <div class="col-lg-12">
+        <nb-card>
+            <nb-card-header><h4>Pesquisa de Discipuladores</h4></nb-card-header>
+            <nb-card-body>
+              <form autocomplete="off" (ngSubmit)="pesquisar()">
+
+                <div class="form-group">
+                  <label for="codigoIgreja" class="label">Igreja</label>
+                  <div>
+                    <nb-select fullWidth name="codigoIgreja" [selected]="filtro.codigoIgreja" [(ngModel)]="filtro.codigoIgreja" >
+                      <nb-option  *ngFor="let igreja of igrejas" [value]="igreja.value"> {{ igreja.name }}</nb-option>
+                    </nb-select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="nome" class="label">Nome</label>
+                  <input type="text" nbInput fullWidth id="nome" name="nome" placeholder="Nome" [(ngModel)]="filtro.nome">
+                </div>
+
+                <div class="form-group">
+                  <label for="dataConversaoDe" class="label">Período Atividade</label>
+                  <div class="full-name-inputs">
+                      <input nbInput placeholder="Data Inicial" fullWidth [nbDatepicker]="dataInicioVigencia" name="dataInicioVigencia" [(ngModel)]="filtro.dataInicioVigencia">
+                      <nb-datepicker format="dd.MM.yyyy" #dataInicioVigencia></nb-datepicker>
+                      <label></label>
+                      <input nbInput placeholder="Data Final" fullWidth [nbDatepicker]="dataFimVigencia" name="dataFimVigencia" [(ngModel)]="filtro.dataFimVigencia">
+                      <nb-datepicker format="dd.MM.yyyy" #dataFimVigencia></nb-datepicker>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                      <label for="cargo" class="label">Cargos</label>
+                      <nb-select fullWidth name="cargo" [selected]="filtro.cargo"  placeholder="Selecione" [(ngModel)]="filtro.cargo"  >
+                        <nb-option>Todas</nb-option>
+                        <nb-option  *ngFor="let cargo of cargos" [value]="cargo.value"> {{ cargo.name }}</nb-option>
+                      </nb-select>
+                </div>
+
+                <button type="submit" nbButton status="primary">Pesquisar</button>
+              </form>
+            </nb-card-body>
+          </nb-card>
+
+         <nb-card>
+            <nb-card-header>
+            </nb-card-header>
+
+            <nb-card-body>
+                <p-table [value]="discipuladores" [paginator]="true" [rows]="5" [responsive]="true"
+                [paginator]="true" [rows]="filtro.itensPorPagina"
+                [lazy]="true" [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)" #tabela >
+
+                <ng-template pTemplate="header" >
+                  <tr>
+                    <th class="col-nome-header">Nome</th>
+                    <th class="col-data-header">Data de Nascimento</th>
+                    <th class="col-data-header">Período de Atividade</th>
+                    <th class="col-cargo-header">Cargo</th>
+                    <th class="col-acoes-header"></th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-disc >
+                  <tr>
+                      <td class="col-nome">{{ disc.nome }}</td>
+                      <td class="col-data">{{ disc.dataNascimento | date:'dd/MM/yyyy' }}</td>
+                      <td class="col-data" [style.color]="disc.dataFimVigencia === null ? '' : 'red'">{{ disc.dataInicioVigencia | date:'dd.MM.yyyy' + ' - ' + ( disc.dataFimVigencia === null ? ' ... ' : disc.dataFimVigencia | date:'dd.MM.yyyy') }}</td>
+                      <td class="col-cargo">{{ disc.cargo }}</td>
+                      <td class="col-acoes">
+                        <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Detalhamento" tooltipPosition="top" [routerLink]="['/pages/discipuladores/info', disc.codigo]" ><nb-icon icon="info-outline"></nb-icon></button>
+                        <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Editar" tooltipPosition="top" *ngIf="getHabilitarClick()" [routerLink]="['/pages/discipuladores', disc.codigo]" ><nb-icon icon="edit-outline"></nb-icon></button>
+                        <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Editar" tooltipPosition="top" *ngIf="!getHabilitarClick()" [routerLink]="['/pages/discipuladores', disc.codigo]"  [ngStyle]="{'cursor': 'not-allowed', 'opacity': '.45'}"><nb-icon icon="edit-outline"></nb-icon></button>
+                        <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(disc)" [disabled]="!auth.temPermissao('ROLE_REMOVER_DISCIPULADOR')" ><nb-icon icon="trash-outline"></nb-icon></button>
+                      </td>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptyMessage">
+                  <tr>
+                    <td colspan="3">
+                      Nenhum discipulador encontrado
+                    </td>
+                  </tr>
+                </ng-template>
+
+              </p-table>
+            </nb-card-body>
+
+            <div class="col-lg-12">
+              <a status="primary" routerLink="/pages/discipuladores/novo" nbButton [disabled]="!auth.temPermissao('ROLE_CADASTRAR_DISCIPULADOR')" >Novo Discipulador</a>
+            </div>
+
+          </nb-card>
+
+
+      </div>
+  </div>

@@ -1,0 +1,229 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
+    <form autocomplete="off" (ngSubmit)="salvar()" #f="ngForm" >
+      <nb-card>
+        <nb-card-header><h4>{{ editando ? 'Edição de' : 'Novo' }} Discipulador</h4></nb-card-header>
+        <nb-card-body>
+          <div class="row show-grid">
+            <div class="col-md-6">
+              <label for="igreja" class="label">Igreja</label>
+              <div>
+                <nb-select fullWidth name="igreja" placeholder="Selecione" [selected]="discipulador.igreja.codigo" [(ngModel)]="discipulador.igreja.codigo" >
+                  <nb-option *ngFor="let igreja of igrejas" [value]="igreja.value"> {{ igreja.name }}</nb-option>
+                </nb-select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="nome" class="label">Nome *</label>
+              <input type="text" nbInput fullWidth name="nome" [(ngModel)]="discipulador.nome" ngModel #nome="ngModel" required minlength="10">
+              <app-message [control]="nome" error="required" text="Informe o nome" ></app-message>
+              <app-message [control]="nome" error="minlength" text="Mínimo de {{ nome.errors?.minlength?.requiredLength }} caracteres." ></app-message>
+            </div>
+          </div>
+
+          <div class="row show-grid">
+            <div class="col-md-6">
+              <label for="dataNascimento" class="label">Data Nascimento *</label>
+              <input nbInput placeholder="Data Inicial" fullWidth [nbDatepicker]="dataNascimento" name="dataNascimento" ngModel #datanascimento="ngModel" [(ngModel)]="discipulador.dataNascimento" required>
+              <nb-datepicker #dataNascimento></nb-datepicker>
+              <app-message [control]="datanascimento" error="required" text="Informe a data de nascimento" ></app-message>
+            </div>
+            <div class="col-md-6">
+              <label for="cpf" class="label">Sexo</label>
+              <nb-radio-group class="validation-radios" [(value)]="discipulador.sexo">
+                <nb-radio value="H">Homem</nb-radio>
+                <nb-radio value="M">Mulher</nb-radio>
+              </nb-radio-group>
+            </div>
+          </div>
+
+          <div class="row show-grid">
+            <div class="col-md-6">
+              <label for="estadoCivil" class="label">Estado Civíl</label>
+              <nb-select fullWidth placeholder="Selecione" name="estadoCivil" [selected]="discipulador.estadoCivil" [(ngModel)]="discipulador.estadoCivil" >
+                <nb-option  *ngFor="let estCivil of estadosCivis" [value]="estCivil.value"> {{ estCivil.name }}</nb-option>
+              </nb-select>
+            </div>
+            <div class="col-md-6">
+              <label for="conjugeEvangelico" class="label">Conjuge Evangélico?</label>
+              <nb-radio-group class="validation-radios" name="conjugeEvangelico" [(value)]="discipulador.conjugeEvangelico">
+                <nb-radio value="S">Sim</nb-radio>
+                <nb-radio value="N">Não</nb-radio>
+              </nb-radio-group>
+            </div>
+          </div>
+
+          <div class="row show-grid">
+            <div class="col-md-12">
+              <label for="nomeConjuge" class="label">Nome do Conjuge</label>
+              <input type="text" nbInput fullWidth name="nomeConjuge" [(ngModel)]="discipulador.nomeConjuge" >
+            </div>
+          </div>
+
+          <div class="row show-grid">
+            <div class="col-md-6">
+              <label for="escolaridade" class="label">Escolaridade</label>
+              <nb-select fullWidth placeholder="Selecione" name="escolaridade" [selected]="discipulador.escolaridade.codigo" [(ngModel)]="discipulador.escolaridade.codigo" >
+                <nb-option  *ngFor="let escolaridade of escolaridades" [value]="escolaridade.value"> {{ escolaridade.name }}</nb-option>
+              </nb-select>
+            </div>
+            <div class="col-md-6">
+              <label for="profissao" class="label">Profissão</label>
+              <nb-select fullWidth placeholder="Selecione" name="profissao" [selected]="discipulador.profissao.codigo" [(ngModel)]="discipulador.profissao.codigo" >
+                <nb-option  *ngFor="let profissao of profissoes" [value]="profissao.value"> {{ profissao.name }}</nb-option>
+              </nb-select>
+            </div>
+          </div>
+
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card>
+          <nb-card-header><h6>Endereço</h6></nb-card-header>
+          <nb-card-body>
+            <div class="row show-grid">
+                <div class="col-md-6">
+                  <label for="nome" class="label">Logradouro</label>
+                  <input type="text" nbInput fullWidth name="logradouro" [(ngModel)]="discipulador.endereco.logradouro" >
+                </div>
+                <div class="col-md-6">
+                  <label for="sigla" class="label">Número</label>
+                  <input type="text" nbInput fullWidth name="numero" [(ngModel)]="discipulador.endereco.numero" >
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-12">
+                  <label for="nome" class="label">Complemento</label>
+                  <input type="text" nbInput fullWidth name="complemento" [(ngModel)]="discipulador.endereco.complemento" >
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-6">
+                  <label for="sigla" class="label">CEP</label>
+                  <input type="text" nbInput fullWidth name="cep" [(ngModel)]="discipulador.endereco.cep" >
+                </div>
+                <div class="col-md-6">
+                  <label for="nome" class="label">Bairro</label>
+                  <input type="text" nbInput fullWidth name="bairro" [(ngModel)]="discipulador.endereco.bairro" >
+                </div>
+            </div>
+
+            <div class="row show-grid">
+                <div class="col-md-6">
+                    <label for="estado" class="label">Estado *</label>
+                    <nb-select fullWidth name="estado" [(selected)]="discipulador.endereco.cidade.estado.codigo" placeholder="Selecione" (selectedChange)="listarCidadesPorEstado()"
+                    [(ngModel)]="discipulador.endereco.cidade.estado.codigo" #estado="ngModel" ngModel required>
+                      <nb-option  *ngFor="let estado of estados" [value]="estado.value"> {{ estado.name }}</nb-option>
+                    </nb-select>
+                    <app-message [control]="estado" error="required" text="Selecione um Estado." ></app-message>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="cidade" class="label">Cidade *</label>
+                  <nb-select fullWidth name="cidade" [(selected)]="discipulador.endereco.cidade.codigo" placeholder="Selecione"
+                  [(ngModel)]="discipulador.endereco.cidade.codigo" [disabled]="!discipulador.endereco.cidade.estado.codigo" #cidade="ngModel" ngModel required>
+                    <nb-option  *ngFor="let cidade of cidades" [value]="cidade.value"> {{ cidade.name }}</nb-option>
+                  </nb-select>
+                  <app-message [control]="cidade" error="required" text="Selecione uma Cidade." ></app-message>
+              </div>
+            </div>
+          </nb-card-body>
+      </nb-card>
+
+      <nb-card>
+        <nb-card-header><h6>Contato</h6></nb-card-header>
+        <nb-card-body>
+          <div class="col-md-12">
+            <form #frmTelefoneTabela="ngForm">
+              <p-table [value]="discipulador.telefones" [responsive]="true">
+                <ng-template pTemplate="header" >
+                  <tr>
+                    <th class="col-telefone-prefixo-header">Prefixo</th>
+                    <th class="col-telefone-numero-header">Número</th>
+                    <th class="col-acoes"></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-telefone let-rowIndex="rowIndex" >
+                  <tr>
+                    <td class="col-telefone-prefixo">{{ telefone.prefixo }}</td>
+                    <td class="col-telefone-numero">{{ telefone.numero }}</td>
+                    <td class="col-acoes">
+                      <button nbButton icon="fa fa-pencil" size="tiny" type="button" pTooltip="Editar" pTooltipPosition="top" (click)="prepararEdicaoTelefone(telefone, rowIndex)" ><nb-icon icon="edit-outline"></nb-icon></button>
+                      <button nbButton type="button" size="tiny" pTooltip="Excluir" pTooltipPosition="top" (click)="removerTelefone(rowIndex)" ><nb-icon icon="trash-outline"></nb-icon></button>
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptyMessage">
+                  <tr>
+                    <td colspan="4">
+                      Nenhum telefone cadastrado.
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </form>
+          </div>
+          <div class="row show-grid">
+            <form #frmTelefoneCadastro="ngForm">
+              <div class="col-md-12 col-6">
+                <label for="prefixo" class="label">Telefone: </label>
+                <input type="text" nbInput mask="(99)" placeholder="(99)" size="2" required name="prefixo" [(ngModel)]="telefone.prefixo" >
+                <input nbInput mask="99999-999?9" placeholder="99999-9999" required name="numero" [(ngModel)]="telefone.numero" >
+                <button *ngIf="!telefoneEditando" class="botaocontato" nbButton (click)="adicionarTelefone(frmTelefoneCadastro)"
+                        type="button" status="primary" size="tiny" [disabled]="frmTelefoneCadastro.invalid">Adicionar <nb-icon icon="plus-outline"></nb-icon></button>
+                <button *ngIf="telefoneEditando" class="botaocontato" nbButton (click)="atualizarTelefone(frmTelefoneCadastro)"
+                        type="button" status="primary" size="tiny" [disabled]="frmTelefoneCadastro.invalid">Atualizar <nb-icon icon="refresh-outline"></nb-icon></button>
+              </div>
+            </form>
+          </div>
+          <div class="row show-grid">
+            <div class="col-md-12">
+              <label for="email" class="label">E-mail</label>
+              <input type="email" nbInput fullWidth name="email" [(ngModel)]="discipulador.email" >
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+
+      <nb-card>
+        <nb-card-header><h6>Discipulador</h6></nb-card-header>
+        <nb-card-body>
+          <div class="row show-grid">
+            <div class="col-md-6">
+              <label for="dataInicioVigenciaDiscipulador" class="label">Inicio das Atividades *</label>
+              <input nbInput placeholder="Data Inicial" fullWidth [nbDatepicker]="dataInicioVigenciaDiscipulador" name="dataInicioVigenciaDiscipulador" ngModel #dataInicioVigenciaValid="ngModel" [(ngModel)]="discipulador.dataInicioVigenciaDiscipulador" required>
+              <nb-datepicker #dataInicioVigenciaDiscipulador></nb-datepicker>
+              <app-message [control]="dataInicioVigenciaValid" error="required" text="Informe a data de inicio do discipulador" ></app-message>
+            </div>
+            <div class="col-md-6">
+              <label for="dataFimVigenciaDiscipulador" class="label">Fim das Atividades</label>
+              <input nbInput placeholder="Data Final" fullWidth [nbDatepicker]="dataFimVigenciaDiscipulador" name="dataFimVigenciaDiscipulador" ngModel #dataFimVigenciaDiscipulador="ngModel" [(ngModel)]="discipulador.dataFimVigenciaDiscipulador">
+              <nb-datepicker #dataFimVigenciaDiscipulador></nb-datepicker>
+            </div>
+          </div>
+
+          <div class="row show-grid">
+            <div class="col-md-6">
+              <label for="cargos" class="label">Cargo *</label>
+              <nb-select fullWidth name="cargos" [(selected)]="cargoSelecionado" placeholder="Selecione"
+                [(ngModel)]="cargoSelecionado" #cargosValid="ngModel" ngModel [required]="isRequired()">
+                <nb-option  *ngFor="let cargo of cargos" [value]="cargo.value"> {{ cargo.name }}</nb-option>
+              </nb-select>
+              <app-message [control]="cargosValid" error="required" text="Selecione um Cargo." ></app-message>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+
+
+      <div class="form-group">
+        <button nbButton type="submit" status="primary" [disabled]="f.invalid">Salvar</button>
+        <button nbButton type="button" status="primary" (click)="novo(f)" >Novo</button>
+        <a routerLink="/pages/discipuladores" >Voltar para a pesquisa</a>
+      </div>
+
+    </form>
+  </div>
+</div>

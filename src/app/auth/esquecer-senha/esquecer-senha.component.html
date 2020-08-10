@@ -1,0 +1,41 @@
+<nb-layout>
+  <nb-layout-column>
+    <div class="container l-simple-page__container" style="max-width: 400px; margin: auto">
+      <form autocomplete="off" #f="ngForm">
+        <div class="form-control-group">
+
+          <div class="form-control-group c-simple-panel">
+            <h1>e-Discipulado</h1>
+            <div class="c-simple-panel__message">
+              <div>Informe o seu e-mail abaixo para receber as instruções de como criar uma nova senha.</div>
+            </div>
+
+            <div class="c-simple-panel__box">
+
+              <div class="form-control-group">
+                <input nbInput fullWidth type="email" name="email" #email placeholder="E-mail" ngModel required >
+              </div>
+
+              <div class="form-control-group">
+                <button nbButton
+                      fullWidth
+                      status="success"
+                      [disabled]="!f.valid"
+                      (click)="enviar(email.value);">
+                      Enviar
+              </button>
+              </div>
+
+              <div style="margin-top: 15px">
+                <a routerLink="/auth/login">Voltar para o Login</a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+  </nb-layout-column>
+</nb-layout>

@@ -1,0 +1,244 @@
+<div class="row">
+    <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
+        <form autocomplete="off" #f="ngForm">
+          <nb-card>
+              <nb-card-header><h4>Detalhamento de Novo Convertido</h4></nb-card-header>
+              <nb-card-body>
+                  <div class="row show-grid">
+                    <div class="col-md-6">
+                      <label for="igreja" class="label">Igreja</label>
+                      <div>
+                        <input type="text" nbInput fullWidth name="igreja" [(ngModel)]="discipulando.igreja.nome" disabled>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="nome" class="label">Nome *</label>
+                        <input type="text" nbInput fullWidth name="nome" [(ngModel)]="discipulando.nome" disabled>
+                      </div>
+                  </div>
+
+                  <div class="row show-grid">
+                    <div class="col-md-6">
+                      <label for="dataNascimento" class="label">Data Nascimento *</label>
+                      <input nbInput fullWidth [nbDatepicker]="dataNascimento" name="dataNascimento" [(ngModel)]="discipulando.dataNascimento" disabled>
+                      <nb-datepicker format="dd.MM.yyyy" #dataNascimento></nb-datepicker>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="sexo" class="label">Sexo</label>
+                      <input type="text" nbInput fullWidth name="sexo" [(ngModel)]="dsSexo" disabled>
+                    </div>
+                  </div>
+
+                  <div class="row show-grid">
+                    <div class="col-md-6">
+                      <label for="estadoCivil" class="label">Estado Civíl</label>
+                      <input type="text" nbInput fullWidth name="estadoCivil" [(ngModel)]="discipulando.estadoCivil" disabled>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="conjugeEvangelico" class="label">Conjuge Evangélico?</label>
+                      <input type="text" nbInput fullWidth name="conjugeEvangelico" [(ngModel)]="dsConjuge" disabled>
+                    </div>
+                  </div>
+
+                  <div class="row show-grid">
+                    <div class="col-md-12">
+                      <label for="nomeConjuge" class="label">Nome do Conjuge</label>
+                      <input type="text" nbInput fullWidth name="nomeConjuge" [(ngModel)]="discipulando.nomeConjuge" disabled>
+                    </div>
+                  </div>
+
+                  <div class="row show-grid">
+                    <div class="col-md-6">
+                      <label for="escolaridade" class="label">Escolaridade</label>
+                      <input type="text" nbInput fullWidth name="escolaridade" [(ngModel)]="discipulando.escolaridade.nome" disabled>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="profissao" class="label">Profissão</label>
+                      <input type="text" nbInput fullWidth name="profissao" [(ngModel)]="discipulando.profissao.nome" disabled>
+                    </div>
+                  </div>
+              </nb-card-body>
+          </nb-card>
+
+          <nb-card>
+              <nb-card-header><h6>Endereço</h6></nb-card-header>
+              <nb-card-body>
+                <div class="row show-grid">
+                    <div class="col-md-6">
+                      <label for="nome" class="label">Logradouro</label>
+                      <input type="text" nbInput fullWidth name="logradouro" [(ngModel)]="discipulando.endereco.logradouro" disabled>
+                    </div>
+                    <div class="col-md-6">
+                          <label for="sigla" class="label">Número</label>
+                          <input type="text" nbInput fullWidth name="numero" [(ngModel)]="discipulando.endereco.numero" disabled>
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                    <div class="col-md-12">
+                        <label for="nome" class="label">Complemento</label>
+                        <input type="text" nbInput fullWidth name="complemento" [(ngModel)]="discipulando.endereco.complemento" disabled>
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                    <div class="col-md-6">
+                      <label for="sigla" class="label">CEP</label>
+                      <input type="text" nbInput fullWidth name="cep" [(ngModel)]="discipulando.endereco.cep" disabled>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="nome" class="label">Bairro</label>
+                      <input type="text" nbInput fullWidth name="bairro" [(ngModel)]="discipulando.endereco.bairro" disabled>
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                    <div class="col-md-6">
+                        <label for="estado" class="label">Estado *</label>
+                        <input type="text" nbInput fullWidth name="estado" [(ngModel)]="discipulando.endereco.cidade.estado.nome" disabled >
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="cidade" class="label">Cidade *</label>
+                      <input type="text" nbInput fullWidth name="cidade" [(ngModel)]="discipulando.endereco.cidade.nome" disabled >
+                  </div>
+                </div>
+
+              </nb-card-body>
+          </nb-card>
+
+          <nb-card>
+            <nb-card-header><h6>Contato</h6></nb-card-header>
+            <nb-card-body>
+              <div class="col-md-12">
+                <form #frmTelefoneTabela="ngForm">
+                    <p-table [value]="discipulando.telefones" [responsive]="true">
+
+                        <ng-template pTemplate="header" >
+                          <tr>
+                            <th class="col-telefone-prefixo-header">Prefixo</th>
+                            <th class="col-telefone-numero-header">Número</th>
+                          </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="body" let-telefone let-rowIndex="rowIndex" >
+                          <tr>
+                            <td class="col-telefone-prefixo"><span style="opacity: 0.35">{{ telefone.prefixo }}</span></td>
+                            <td class="col-telefone-numero"><span style="opacity: 0.35">{{ telefone.numero }}</span></td>
+                          </tr>
+                        </ng-template>
+
+                        <ng-template pTemplate="emptyMessage">
+                          <tr>
+                            <td colspan="4">
+                              Nenhum telefone cadastrado.
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </p-table>
+                  </form>
+              </div>
+
+              <div class="col-md-12">
+                <label for="email" class="label">E-mail</label>
+                <input type="email" nbInput fullWidth name="email" [(ngModel)]="discipulando.email" disabled>
+              </div>
+            </nb-card-body>
+          </nb-card>
+
+          <nb-card>
+            <nb-card-header><h6>Conversão</h6></nb-card-header>
+            <nb-card-body>
+              <div class="row show-grid">
+                <div class="col-md-6">
+                  <label for="dataConversao" class="label">Data de Conversão *</label>
+                  <input nbInput fullWidth [nbDatepicker]="dataConversao" name="dataConversao" [(ngModel)]="discipulando.dataConversao" disabled>
+                  <nb-datepicker format="dd.MM.yyyy" #dataConversao></nb-datepicker>
+                </div>
+                <div class="col-md-6">
+                  <label for="nomePregadoConversao" class="label">Nome do Pregador</label>
+                  <input type="text" nbInput fullWidth name="nomePregadoConversao" [(ngModel)]="discipulando.nomePregadoConversao" disabled>
+                </div>
+              </div>
+
+              <div class="row show-grid">
+                <div class="col-md-6">
+                  <label for="localConversao" class="label">Local de Conversão *</label>
+                  <input type="text" nbInput fullWidth name="localConversao" [(ngModel)]="discipulando.localConversao.nome" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="eventoConversao" class="label">Evento Conversão *</label>
+                  <input type="text" nbInput fullWidth name="eventoConversao" [(ngModel)]="discipulando.eventoConversao.nome" disabled>
+                </div>
+              </div>
+
+              <div class="row show-grid">
+                <div class="col-md-6">
+                  <label for="dataBatismo" class="label">Data de Batismo</label>
+                  <input nbInput fullWidth [nbDatepicker]="dataBatismo" name="dataBatismo" [(ngModel)]="discipulando.dataBatismo" disabled>
+                  <nb-datepicker format="dd.MM.yyyy" #dataBatismo></nb-datepicker>
+                </div>
+                <div class="col-md-6">
+                  <label for="localBatismo" class="label">Local do Batismo</label>
+                  <input nbInput fullWidth name="localBatismo" disabled>
+                </div>
+              </div>
+
+              <div class="row show-grid">
+                <div class="col-md-6">
+                  <label for="dataInicioPeriodoDiscipulado" class="label">Inicio do Discipulado</label>
+                  <input nbInput fullWidth [nbDatepicker]="dataInicioPeriodoDiscipulado" name="dataInicioPeriodoDiscipulado" [(ngModel)]="discipulando.dataInicioPeriodoDiscipulado" disabled>
+                  <nb-datepicker format="dd.MM.yyyy" #dataInicioPeriodoDiscipulado></nb-datepicker>
+                </div>
+                <div class="col-md-6">
+                  <label for="dataFimPeriodoDiscipulado" class="label">Fim do Discipulado</label>
+                  <input nbInput fullWidth [nbDatepicker]="dataFimPeriodoDiscipulado" name="dataFimPeriodoDiscipulado" [(ngModel)]="discipulando.dataFimPeriodoDiscipulado" disabled>
+                  <nb-datepicker format="dd.MM.yyyy" #dataFimPeriodoDiscipulado></nb-datepicker>
+                </div>
+              </div>
+            </nb-card-body>
+          </nb-card>
+
+          <nb-card>
+            <nb-card-header><h6>Dados Espirituais</h6></nb-card-header>
+            <nb-card-body>
+              <div class="row show-grid">
+
+                <div class="col-md-6">
+                  <label for="retornandoJesus" class="label">Retornando para Jesus?</label>
+                  <input type="text" nbInput fullWidth name="retornandoJesus" [(ngModel)]="dsRetornandoJesus" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="pertenceuIgreja" class="label">Ja Pertenceu a alguma igreja?</label>
+                  <input type="text" nbInput fullWidth name="pertenceuIgreja" [(ngModel)]="dsPertenceuIgreja" disabled>
+                </div>
+              </div>
+
+              <div class="row show-grid">
+                <div class="col-md-12">
+                  <label for="nomeIgreja" class="label">Nome</label>
+                  <input type="text" nbInput fullWidth name="nomeIgreja" [(ngModel)]="discipulando.nmIgrejaNovoDecidido" disabled>
+                </div>
+              </div>
+
+              <div class="row show-grid">
+                <div class="col-md-6">
+                  <label for="batizado" class="label">Ja foi batizado?</label>
+                  <input type="text" nbInput fullWidth name="batizado" [(ngModel)]="dsBatizado" disabled>
+                </div>
+                <div class="col-md-6">
+                  <label for="batizadoImersao" class="label">Batizado por Imersão?</label>
+                  <input type="text" nbInput fullWidth name="batizadoImersao" [(ngModel)]="dsBatizadoImersao" disabled>
+                </div>
+              </div>
+            </nb-card-body>
+          </nb-card>
+
+
+
+        </form>
+        <div class="form-group">
+          <a routerLink="/pages/discipulandos" >Voltar para a pesquisa</a>
+        </div>
+    </div>
+</div>

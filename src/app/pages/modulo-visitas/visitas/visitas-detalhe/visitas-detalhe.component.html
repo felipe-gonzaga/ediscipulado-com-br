@@ -1,0 +1,143 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant" >
+      <form autocomplete="off" #f="ngForm" >
+        <nb-card>
+            <nb-card-header><h4>Detalhamento de Visita</h4></nb-card-header>
+            <nb-card-body >
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="igreja" class="label">Igreja</label>
+                    <div>
+                      <input type="text" nbInput fullWidth name="nomeIgreja" [(ngModel)]="visita.igreja.nome" disabled>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="nome" class="label">Nome *</label>
+                    <input type="text" nbInput fullWidth name="nome" [(ngModel)]="visita.nome" disabled>
+
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="dhVisita" class="label">Data/Hora Visita *</label>
+                    <input nbInput fullWidth name="dhVisita" [ngModel]="visita.dhVisita | date:'MM/dd/yyyy HH:mm:ss'" disabled>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="igreja" class="label">Motivos</label>
+                    <div>
+                      <input nbInput fullWidth name="nomeMotivo" [(ngModel)]="visita.motivo.nome" disabled>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="resumo" class="label">Resumo</label>
+                    <textarea nbInput name="resumo" fullWidth [(ngModel)]="visita.resumo" disabled></textarea>
+                  </div>
+                </div>
+
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+          <nb-card-header><h6>Situações da Visita</h6></nb-card-header>
+          <nb-card-body>
+            <div class="row show-grid">
+              <div class="col-md-12">
+                <form #frmSituacoesVisita="ngForm">
+                  <p-table [value]="visita.situacoes" [responsive]="true">
+                    <ng-template pTemplate="header" >
+                      <tr>
+                        <th class="col-permissoes-descricao-header">Descrição</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-situa >
+                      <tr>
+                        <td class="col-permissoes-descricao">{{ situa.descricao }}</td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptyMessage">
+                      <tr>
+                        <td  colspan="4">
+                          Nenhuma situação atribuida a visita.
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </form>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+          <nb-card-header><h6>Discipuladores</h6></nb-card-header>
+          <nb-card-body>
+            <div class="row show-grid">
+              <div class="col-md-12">
+                <form #frmSituacoesVisita="ngForm">
+                  <p-table [value]="visita.discipuladores" [responsive]="true">
+                    <ng-template pTemplate="header" >
+                      <tr>
+                        <th class="col-permissoes-descricao-header">Nome</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-discip >
+                      <tr>
+                        <td class="col-permissoes-descricao">{{ discip.nome }}</td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptyMessage">
+                      <tr>
+                        <td  colspan="4">
+                          Nenhum discipulador atribuido a visita.
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </form>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+          <nb-card-header><h6>Novos Convertidos</h6></nb-card-header>
+          <nb-card-body>
+            <div class="row show-grid">
+              <div class="col-md-12">
+                <form #frmSituacoesVisita="ngForm">
+                  <p-table [value]="visita.discipulandos" [responsive]="true">
+                    <ng-template pTemplate="header" >
+                      <tr>
+                        <th class="col-permissoes-descricao-header">Nome</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-novoConvt >
+                      <tr>
+                        <td class="col-permissoes-descricao">{{ novoConvt.nome }}</td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptyMessage">
+                      <tr>
+                        <td  colspan="4">
+                          Nenhum novo convertido atribuido a visita.
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </form>
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+
+        <div class="form-group">
+          <a routerLink="/pages/visitas" >Voltar para a pesquisa</a>
+        </div>
+
+      </form>
+  </div>
+</div>

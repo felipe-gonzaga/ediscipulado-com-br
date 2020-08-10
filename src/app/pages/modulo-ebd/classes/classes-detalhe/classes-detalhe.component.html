@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant">
+    <form autocomplete="off" #f="ngForm" >
+      <nb-card>
+        <nb-card-header><h4>Detalhamento de Classe</h4></nb-card-header>
+        <nb-card-body>
+          <div class="row show-grid">
+            <div class="col-md-6">
+              <label for="igreja" class="label">Igreja</label>
+                <input type="text" nbInput fullWidth name="igreja" [(ngModel)]="classe.igreja.nome" disabled >
+            </div>
+            <div class="col-md-6">
+              <label for="nome" class="label">Nome</label>
+              <input type="text" nbInput fullWidth name="nome" [(ngModel)]="classe.nome" disabled >
+            </div>
+          </div>
+        </nb-card-body>
+
+        <nb-card-body>
+          <div class="row show-grid">
+            <div class="col-md-12">
+              <form #frmPermissoesTabela="ngForm">
+                <p-table [value]="classe.licoes" [responsive]="true">
+                  <ng-template pTemplate="header" >
+                    <tr>
+                      <th>Ciclo - Lição</th>
+                    </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-lic >
+                      <tr>
+                        <td>{{ lic.ciclo.nome + ': ' + lic.numero  + ' - ' + lic.nome }}</td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptyMessage">
+                      <tr>
+                        <td  colspan="4">
+                          Nenhuma permissão atribuida ao usuário.
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </form>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+
+      <div class="form-group">
+        <a routerLink="/pages/classes" >Voltar para a pesquisa</a>
+      </div>
+
+    </form>
+  </div>
+</div>

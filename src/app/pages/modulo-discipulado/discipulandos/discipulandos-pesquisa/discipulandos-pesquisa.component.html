@@ -1,0 +1,112 @@
+<div class="row">
+  <div class="col-lg-12">
+      <nb-card>
+          <nb-card-header><h4>Pesquisa de Novos Decididos</h4></nb-card-header>
+          <nb-card-body>
+            <form autocomplete="off" (ngSubmit)="pesquisar()">
+
+              <div class="form-group">
+                <label for="codigoIgreja" class="label">Igreja</label>
+                <div>
+                  <nb-select fullWidth name="codigoIgreja" [selected]="filtro.codigoIgreja" [(ngModel)]="filtro.codigoIgreja" (selectedChange)="atualizarLocalConversaoEventoConversao()" >
+                    <nb-option  *ngFor="let igreja of igrejas" [value]="igreja.value"> {{ igreja.name }}</nb-option>
+                  </nb-select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="nome" class="label">Nome</label>
+                <input type="text" nbInput fullWidth id="nome" name="nome" placeholder="Nome" [(ngModel)]="filtro.nome">
+              </div>
+
+              <div class="form-group">
+                <label for="dataConversaoDe" class="label">Período Conversão</label>
+                <div class="full-name-inputs">
+                    <input nbInput placeholder="Data Inicial" fullWidth [nbDatepicker]="dataConversaoDe" name="dataConversaoDe" [(ngModel)]="filtro.dataConversaoDe">
+                    <nb-datepicker format="dd.MM.yyyy" #dataConversaoDe></nb-datepicker>
+                    <label></label>
+                    <input nbInput placeholder="Data Final" fullWidth [nbDatepicker]="dataConversaoAte" name="dataConversaoAte" [(ngModel)]="filtro.dataConversaoAte">
+                    <nb-datepicker format="dd.MM.yyyy" #dataConversaoAte></nb-datepicker>
+                </div>
+              </div>
+
+              <div class="form-group">
+
+                    <label for="localConversao" class="label">Local de Conversão</label>
+                    <nb-select fullWidth name="localConversao" [selected]="filtro.localConversao"  placeholder="Selecione" [(ngModel)]="filtro.localConversao"  >
+                      <nb-option value="">Todas</nb-option>
+                      <nb-option *ngFor="let local of locais" [value]="local.value"> {{ local.name }}</nb-option>
+                    </nb-select>
+
+              </div>
+              <div class="form-group">
+
+                    <label for="eventoConversao" class="label">Evento de Conversão</label>
+                    <nb-select fullWidth name="eventoConversao" [selected]="filtro.eventoConversao"  placeholder="Selecione" [(ngModel)]="filtro.eventoConversao"  >
+                      <nb-option value="">Todas</nb-option>
+                      <nb-option *ngFor="let evento of eventos" [value]="evento.value"> {{ evento.name }}</nb-option>
+                    </nb-select>
+
+              </div>
+
+              <button type="submit" nbButton status="primary">Pesquisar</button>
+            </form>
+          </nb-card-body>
+        </nb-card>
+
+       <nb-card>
+          <nb-card-header>
+          </nb-card-header>
+
+          <nb-card-body>
+              <p-table [value]="discipulandos" [paginator]="true" [rows]="5" [responsive]="true"
+              [paginator]="true" [rows]="filtro.itensPorPagina"
+              [lazy]="true" [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)" #tabela >
+
+              <ng-template pTemplate="header" >
+                <tr>
+                  <th class="col-nome-header">Nome</th>
+                  <th class="col-local-conversao-header">Local Conversão</th>
+                  <th class="col-evento-conversao-header">Evento Conversão</th>
+                  <th class="col-data-header">Data Conversão</th>
+                  <th class="col-sigla-igreja-discipulando-header">Igreja</th>
+                  <th class="col-acoes-header"></th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-disc >
+                <tr>
+                    <td class="col-nome">{{ disc.nome }}</td>
+                    <td class="col-local-conversao">{{ disc.localConversao }}</td>
+                    <td class="col-evento-conversao">{{ disc.eventoConversao }}</td>
+                    <td class="col-data">{{ disc.dataConversao | date: 'dd.MM.yyyy' }}</td>
+                    <td class="col-sigla-igreja-discipulando">{{ disc.siglaIgrejaDiscipulando }}</td>
+                    <td class="col-acoes">
+                      <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Detalhamento" tooltipPosition="top" [routerLink]="['/pages/discipulandos/info', disc.codigo]" ><nb-icon icon="info-outline"></nb-icon></button>
+                      <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Editar" tooltipPosition="top" *ngIf="getHabilitarClick()" [routerLink]="['/pages/discipulandos', disc.codigo]" ><nb-icon icon="edit-outline"></nb-icon></button>
+                      <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Editar" tooltipPosition="top" *ngIf="!getHabilitarClick()" [routerLink]="['/pages/discipulandos', disc.codigo]"  [ngStyle]="{'cursor': 'not-allowed', 'opacity': '.45'}"><nb-icon icon="edit-outline"></nb-icon></button>
+                      <button nbButton status="primary" size="tiny" appearance="hero" pTooltip="Excluir" tooltipPosition="top" (click)="confirmarExclusao(disc)" [disabled]="!auth.temPermissao('ROLE_REMOVER_DISCIPULANDO')" ><nb-icon icon="trash-outline"></nb-icon></button>
+                    </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="emptyMessage">
+                <tr>
+                  <td colspan="3">
+                    Nenhum novo convertido encontrado
+                  </td>
+                </tr>
+              </ng-template>
+
+            </p-table>
+          </nb-card-body>
+
+          <div class="col-lg-12">
+            <a status="primary" routerLink="/pages/discipulandos/novo" nbButton [disabled]="!auth.temPermissao('ROLE_CADASTRAR_DISCIPULANDO')" >Novo Convertido</a>
+          </div>
+
+        </nb-card>
+
+
+    </div>
+</div>

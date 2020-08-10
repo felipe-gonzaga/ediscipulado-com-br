@@ -1,0 +1,123 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant" >
+      <form autocomplete="off" (ngSubmit)="salvar(f)" #f="ngForm" >
+        <nb-card>
+            <nb-card-header><h4>{{ editando ? 'Edição de ' : '' }}Nova Matrícula</h4></nb-card-header>
+            <nb-card-body >
+
+                <div class="row show-grid" *ngIf="editando">
+                  <div class="col-md-12">
+                    <label for="nomeAluno" class="label">Nome</label>
+                    <div>
+                      <input type="text" nbInput fullWidth id="nomeAluno" name="nomeAluno" [(ngModel)]="matricula.aluno.nome" disabled>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="igreja" class="label">Igreja</label>
+                    <div>
+                      <nb-select fullWidth name="igreja" placeholder="Selecione" [selected]="matricula.igreja.codigo" [(ngModel)]="matricula.igreja.codigo" (selectedChange)="atualizarClassesPorIgreja()" >
+                        <nb-option *ngFor="let ig of igrejas" [value]="ig.value"> {{ ig.name }}</nb-option>
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <label for="nome" class="label">Classe *</label>
+                      <nb-select fullWidth name="cdClasse" [selected]="matricula.classe.codigo" [(ngModel)]="matricula.classe.codigo" >
+                        <nb-option  *ngFor="let classe of classes" [value]="classe.value"> {{ classe.name }}</nb-option>
+                      </nb-select>
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="dtMatricula" class="label">Data de Matrícula *</label>
+                    <input nbInput placeholder="Data Matrícula" fullWidth [nbDatepicker]="dtMatricula" name="dtMatricula" ngModel #dtMatriculaValid="ngModel" [(ngModel)]="matricula.dtMatricula" required>
+                    <nb-datepicker  #dtMatricula></nb-datepicker>
+                    <app-message [control]="dtMatriculaValid" error="required" text="Informe a data de matrícula" ></app-message>
+                  </div>
+                </div>
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="descricao" class="label">Descição</label>
+                    <textarea nbInput name="descricao" fullWidth placeholder="Descição" [(ngModel)]="matricula.descricao"></textarea>
+                  </div>
+                </div>
+
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card *ngIf="!editando">
+          <nb-card-header><h6>Alunos</h6></nb-card-header>
+          <nb-card-body >
+            <form autocomplete="off" (ngSubmit)="pesquisaPessoaMatricula()">
+            <div class="row show-grid">
+              <div class="col-md-12">
+                <label for="nome" class="label">Nome</label>
+                <input type="text" nbInput fullWidth id="nome" name="nome" placeholder="Nome" [(ngModel)]="filtroAlunoMatricula.nmAluno">
+              </div>
+            </div>
+
+            <button type="submit" nbButton status="primary">Pesquisar</button>
+          </form>
+
+          <nb-card>
+            <nb-card-header>
+            </nb-card-header>
+
+            <nb-card-body>
+                <p-table [value]="alunos" [paginator]="false" [rows]="5" [responsive]="true"
+                [rows]="filtro.itensPorPagina"
+                [lazy]="true" [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)" #tabela >
+
+                <ng-template pTemplate="header" >
+                  <tr>
+                    <th class="col-nome-header">Nome</th>
+                    <th class="col-local-conversao-header">Local Conversão</th>
+                    <th class="col-evento-conversao-header">Evento Conversão</th>
+                    <th class="col-data-header">Data Conversão</th>
+                    <th class="col-sigla-igreja-discipulando-header">Igreja</th>
+                    <th class="col-acoes-header"></th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-disc >
+                  <tr>
+                      <td class="col-nome">{{ disc.nmAluno }}</td>
+                      <td class="col-local-conversao">{{ disc.nmLocalConverao }}</td>
+                      <td class="col-evento-conversao">{{ disc.nmEventoConversao }}</td>
+                      <td class="col-data">{{ disc.dtConversao | date: 'dd.MM.yyyy' }}</td>
+                      <td class="col-sigla-igreja-discipulando">{{ disc.sgIgreja }}</td>
+                      <td class="col-acoes">
+                        <p-radioButton name="groupname" (onClick)="escolherAluno($event, disc.cdPessoa)"></p-radioButton>
+                      </td>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptyMessage">
+                  <tr>
+                    <td colspan="3">
+                      Nenhum aluno encontrado
+                    </td>
+                  </tr>
+                </ng-template>
+
+              </p-table>
+            </nb-card-body>
+
+          </nb-card>
+
+          </nb-card-body>
+        </nb-card>
+
+
+        <div class="form-group">
+          <button nbButton type="submit" status="primary" [disabled]="f.invalid">Salvar</button>
+          <a routerLink="/pages/matriculas" >Ir para a pesquisa</a>
+        </div>
+
+      </form>
+  </div>
+</div>

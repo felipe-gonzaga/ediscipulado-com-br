@@ -1,0 +1,111 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant" >
+      <form autocomplete="off" >
+        <nb-card>
+            <nb-card-header><h4>Detalhamento da Aula</h4></nb-card-header>
+            <nb-card-body >
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="igreja" class="label">Igreja</label>
+                    <div>
+                      <input type="text" nbInput fullWidth id="igreja" name="igreja" [(ngModel)]="aula.classe.igreja.nome" disabled>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <label for="classe" class="label">Classe</label>
+                      <input type="text" nbInput fullWidth id="classe" name="classe" [(ngModel)]="aula.classe.nome" disabled>
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="dtAula" class="label">Data de Aula</label>
+                    <input nbInput fullWidth [nbDatepicker]="dtAula" name="dtAula" [(ngModel)]="aula.dtAula" disabled>
+                    <nb-datepicker format="dd.MM.yyyy" #dtAula></nb-datepicker>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="inAvaliacao" class="label">Permite Avaliação</label>
+                    <input type="text" nbInput fullWidth id="inAvaliacao" name="inAvaliacao" [(ngModel)]="dsAvaliacao" disabled>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="cdProfessor" class="label">Professor</label>
+                    <input type="text" nbInput fullWidth id="classe" name="classe" [(ngModel)]="aula.professor.nome" disabled>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="licao" class="label">Lição</label>
+                    <input type="text" nbInput fullWidth id="licao" name="licao" [(ngModel)]="dsLicao" disabled>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="descricao" class="label">Descição</label>
+                    <textarea nbInput name="descricao" fullWidth placeholder="Descição" [(ngModel)]="aula.descricao" disabled></textarea>
+                  </div>
+                </div>
+
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+          <nb-card-header><h6>Alunos</h6></nb-card-header>
+          <nb-card-body>
+              <p-table [value]="alunos" [paginator]="false" [rows]="999" [responsive]="true"
+              [rows]="filtro.itensPorPagina"
+              [lazy]="true" [totalRecords]="totalRegistros"  #tabela >
+
+              <ng-template pTemplate="header" >
+                <tr>
+                  <th class="col-nome-header">Nome</th>
+                  <th class="col-data-header">Data Matrícula</th>
+                  <th class="col-sigla-igreja-discipulando-header">Igreja</th>
+                  <th class="col-acoes-header">Presença</th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-disc >
+                <tr>
+                    <td class="col-nome">{{ disc.nmAluno }}</td>
+                    <td class="col-data">{{ disc.dtMatricula | date: 'dd.MM.yyyy' }}</td>
+                    <td class="col-sigla-igreja-discipulando">{{ disc.sgIgreja }}</td>
+                    <td class="col-acoes">
+                      <div class="{{ disc.inFrequencia == 'N' ? 'text-danger' : 'text-info' }}">{{ disc.inFrequencia == 'N' ? 'Faltou' : 'Presente' }}</div>
+                    </td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="summary">
+                <div>Total de {{alunos?.length}} alunos matriculados </div>
+                <div class="text-info">Total de {{ totalPresencas }} alunos presentes</div>
+                <div class="text-danger">Total de {{ totalFaltas }} alunos faltaram</div>
+              </ng-template>
+
+              <ng-template pTemplate="emptyMessage">
+                <tr>
+                  <td colspan="3">
+                    Nenhum aluno encontrado
+                  </td>
+                </tr>
+              </ng-template>
+
+            </p-table>
+          </nb-card-body>
+
+        </nb-card>
+
+
+        <div class="form-group">
+          <a routerLink="/pages/aulas" >Ir para a pesquisa</a>
+        </div>
+
+      </form>
+  </div>
+</div>

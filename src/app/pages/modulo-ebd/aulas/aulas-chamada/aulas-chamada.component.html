@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="col-lg-12" [nbSpinner]="loading" nbSpinnerStatus="info" nbSpinnerSize="giant" >
+      <form autocomplete="off" (ngSubmit)="salvar(f)" #f="ngForm" >
+        <nb-card>
+            <nb-card-header><h4>Registrar Chamada</h4></nb-card-header>
+            <nb-card-body >
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="igreja" class="label">Igreja</label>
+                    <div>
+                      <input type="text" nbInput fullWidth id="igreja" name="igreja" [(ngModel)]="aula.classe.igreja.nome" disabled>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                      <label for="classe" class="label">Classe</label>
+                      <input type="text" nbInput fullWidth id="classe" name="classe" [(ngModel)]="aula.classe.nome" disabled>
+                    </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                    <label for="dtAula" class="label">Data de Aula</label>
+                    <input nbInput fullWidth [nbDatepicker]="dtAula" name="dtAula" [(ngModel)]="aula.dtAula" disabled>
+                    <nb-datepicker format="dd.MM.yyyy" #dtAula></nb-datepicker>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="inAvaliacao" class="label">Permite Avaliação</label>
+                    <input type="text" nbInput fullWidth id="inAvaliacao" name="inAvaliacao" [(ngModel)]="dsAvaliacao" disabled>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="cdProfessor" class="label">Professor</label>
+                    <input type="text" nbInput fullWidth id="classe" name="classe" [(ngModel)]="aula.professor.nome" disabled>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="licao" class="label">Lição</label>
+                    <input type="text" nbInput fullWidth id="licao" name="licao" [(ngModel)]="dsLicao" disabled>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-12">
+                    <label for="descricao" class="label">Descição</label>
+                    <textarea nbInput name="descricao" fullWidth placeholder="Descição" [(ngModel)]="aula.descricao" disabled></textarea>
+                  </div>
+                </div>
+
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+          <nb-card-header><h6>Alunos</h6></nb-card-header>
+          <nb-card-body >
+            <form autocomplete="off" (ngSubmit)="carregarFrequenciaAlunosMatriculados()">
+            <div class="row show-grid">
+              <div class="col-md-12">
+                <label for="nome" class="label">Nome</label>
+                <input type="text" nbInput fullWidth id="nome" name="nome" placeholder="Nome" [(ngModel)]="filtroFrequeciaAulas.nmAluno">
+              </div>
+            </div>
+
+            <button type="submit" nbButton status="primary">Pesquisar</button>
+          </form>
+
+          <nb-card>
+            <nb-card-header>
+            </nb-card-header>
+
+            <nb-card-body>
+                <p-table [value]="alunos" [paginator]="false" [rows]="999" [responsive]="true"
+                [rows]="filtro.itensPorPagina"
+                [lazy]="true" [totalRecords]="totalRegistros" (onLazyLoad)="aoMudarPagina($event)" #tabela >
+
+                <ng-template pTemplate="header" >
+                  <tr>
+                    <th class="col-nome-header">Nome</th>
+                    <th class="col-data-header">Data Matrícula</th>
+                    <th class="col-sigla-igreja-discipulando-header">Igreja</th>
+                    <th class="col-acoes-header">Presença</th>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-disc >
+                  <tr>
+                      <td class="col-nome">{{ disc.nmAluno }}</td>
+                      <td class="col-data">{{ disc.dtMatricula | date: 'dd.MM.yyyy' }}</td>
+                      <td class="col-sigla-igreja-discipulando">{{ disc.sgIgreja }}</td>
+                      <td class="col-acoes">
+                        <p-checkbox name="group1" [value]="disc.cdAluno" [(ngModel)]="alunosSelecionados" [inputId]="disc.cdAluno"></p-checkbox>
+                      </td>
+                  </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptyMessage">
+                  <tr>
+                    <td colspan="3">
+                      Nenhum aluno encontrado
+                    </td>
+                  </tr>
+                </ng-template>
+
+              </p-table>
+            </nb-card-body>
+
+          </nb-card>
+
+          </nb-card-body>
+        </nb-card>
+
+
+        <div class="form-group">
+          <button nbButton type="submit" status="primary" [disabled]="f.invalid">Salvar</button>
+          <a routerLink="/pages/aulas" >Ir para a pesquisa</a>
+        </div>
+
+      </form>
+  </div>
+</div>

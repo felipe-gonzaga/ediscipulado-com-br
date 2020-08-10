@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-lg-12">
+      <form autocomplete="off" #f="ngForm">
+        <nb-card>
+            <nb-card-header><h4>Detalhamento de Igreja</h4></nb-card-header>
+            <nb-card-body>
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                      <label for="nome" class="label">Nome *</label>
+                      <input type="text" nbInput fullWidth name="nome" [(ngModel)]="igreja.nome" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="sigla" class="label">Sigla *</label>
+                        <input type="text" nbInput fullWidth name="sigla" [(ngModel)]="igreja.sigla" disabled>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                      <label for="email" class="label">Email</label>
+                      <input type="email" nbInput fullWidth name="email" [(ngModel)]="igreja.email" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="site" class="label">Site</label>
+                        <input type="text" nbInput fullWidth name="site" [(ngModel)]="igreja.site" disabled>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                      <label for="nuDocumento" class="label">Documento da Igreja</label>
+                      <input type="text" nbInput fullWidth name="nuDocumento" [(ngModel)]="igreja.nuDocumento" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="nomeRepresentante" class="label">Representante Legal</label>
+                        <input type="text" nbInput fullWidth name="nomeRepresentante" [(ngModel)]="igreja.nomeRepresentante" disabled>
+                  </div>
+                </div>
+
+                <div class="row show-grid">
+                  <div class="col-md-6">
+                      <label for="dataInicioAtividade" class="label">Inicio das Atividades *</label>
+                      <input nbInput fullWidth [nbDatepicker]="dataInicioAtividade" name="dataInicioAtividade" [(ngModel)]="igreja.dataInicioAtividade" disabled>
+                      <nb-datepicker format="dd.MM.yyyy" #dataInicioAtividade></nb-datepicker>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="dataFimAtividade" class="label">Fim das Atividades</label>
+                      <input nbInput fullWidth [nbDatepicker]="dataFimAtividade" name="dataFimAtividade" [(ngModel)]="igreja.dataFimAtividade" disabled>
+                      <nb-datepicker format="dd.MM.yyyy" #dataFimAtividade></nb-datepicker>
+                  </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card>
+            <nb-card-header><h6>Endereço</h6></nb-card-header>
+            <nb-card-body>
+              <div class="row show-grid">
+                  <div class="col-md-6">
+                      <label for="nome" class="label">Logradouro</label>
+                      <input type="text" nbInput fullWidth name="logradouro" [(ngModel)]="igreja.logradouro" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="sigla" class="label">Número</label>
+                        <input type="text" nbInput fullWidth name="numero" [(ngModel)]="igreja.numero" disabled>
+                  </div>
+              </div>
+
+              <div class="row show-grid">
+                  <div class="col-md-12">
+                      <label for="nome" class="label">Complemento</label>
+                      <input type="text" nbInput fullWidth name="complemento" [(ngModel)]="igreja.complemento" disabled>
+                  </div>
+              </div>
+
+              <div class="row show-grid">
+                  <div class="col-md-6">
+                      <label for="sigla" class="label">CEP</label>
+                      <input type="text" nbInput fullWidth name="cep" [(ngModel)]="igreja.cep" disabled>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="nome" class="label">Bairro</label>
+                    <input type="text" nbInput fullWidth name="bairro" [(ngModel)]="igreja.bairro" disabled>
+                  </div>
+              </div>
+
+              <div class="row show-grid">
+                  <div class="col-md-6">
+                      <label for="estado" class="label">Estado *</label>
+                      <input type="text" nbInput fullWidth name="estado" [(ngModel)]="igreja.cidade.estado.nome" disabled>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="cidade" class="label">Cidade *</label>
+                    <input type="text" nbInput fullWidth name="cidade" [(ngModel)]="igreja.cidade.nome" disabled>
+                </div>
+              </div>
+
+            </nb-card-body>
+        </nb-card>
+
+        <div class="form-group">
+          <a routerLink="/pages/igrejas" >Voltar para a pesquisa</a>
+        </div>
+
+      </form>
+  </div>
+</div>
